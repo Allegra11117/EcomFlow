@@ -18,7 +18,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from ecom_ops.config import ensure_dirs, get_config  # noqa: E402
+from ecomflow.config import ensure_dirs, get_config  # noqa: E402
 
 CATALOG: dict[str, list[str]] = {
     "厨房小电": ["便携榨汁杯", "迷你电煮锅", "多功能料理机", "电热水杯",

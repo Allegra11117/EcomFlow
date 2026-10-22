@@ -7,7 +7,7 @@ from datetime import date
 import pandas as pd
 import pytest
 
-from ecom_ops import metrics
+from ecomflow import metrics
 
 
 def test_daily_summary_caliber(tables):

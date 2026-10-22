@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from ecom_ops.validate import summarize, validate
+from ecomflow.validate import summarize, validate
 
 
 def test_core_rules_hit(tables, cfg):

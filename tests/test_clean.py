@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from ecom_ops.clean import parse_datetime
+from ecomflow.clean import parse_datetime
 
 
 def test_parse_mixed_datetime_formats():

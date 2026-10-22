@@ -15,9 +15,9 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from ecom_ops import ai, db, metrics, report  # noqa: E402
-from ecom_ops.config import get_config  # noqa: E402
-from ecom_ops.pipeline import run_pipeline  # noqa: E402
+from ecomflow import ai, db, metrics, report  # noqa: E402
+from ecomflow.config import get_config  # noqa: E402
+from ecomflow.pipeline import run_pipeline  # noqa: E402
 
 CFG = get_config()
 CN = report.CN_COLUMNS

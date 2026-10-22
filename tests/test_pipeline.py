@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from ecom_ops import db
-from ecom_ops.config import ROOT
-from ecom_ops.pipeline import run_pipeline
+from ecomflow import db
+from ecomflow.config import ROOT
+from ecomflow.pipeline import run_pipeline
 
 DATA_READY = (ROOT / "data" / "raw" / "orders.csv").exists()
 

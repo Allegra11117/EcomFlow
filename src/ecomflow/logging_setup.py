@@ -11,7 +11,7 @@ from .config import ensure_dirs, get_config
 _CONFIGURED = False
 
 
-def get_logger(name: str = "ecom_ops") -> logging.Logger:
+def get_logger(name: str = "ecomflow") -> logging.Logger:
     global _CONFIGURED
     if not _CONFIGURED:
         cfg = get_config()
@@ -23,7 +23,7 @@ def get_logger(name: str = "ecom_ops") -> logging.Logger:
             "%(asctime)s | %(levelname)-7s | %(name)s | %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
         )
-        root = logging.getLogger("ecom_ops")
+        root = logging.getLogger("ecomflow")
         root.setLevel(logging.INFO)
         root.handlers.clear()
 

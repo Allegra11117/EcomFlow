@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from ecom_ops.ai import guard_sql, plan_question
+from ecomflow.ai import guard_sql, plan_question
 
 
 @pytest.mark.parametrize("sql", [

@@ -405,7 +405,7 @@ def build_html(path: Path, tables: dict[str, pd.DataFrame], issues: pd.DataFrame
 {_html_table(urgent[['sku_id', 'warehouse', 'on_hand', 'cover_days', 'status', 'suggestion']]
              if not urgent.empty else urgent)}</section>
 <section><h2>异常提醒（Top 8）</h2>{issue_html}</section>
-<footer>本报表由 ecom-ops-auto 自动生成；口径问题请联系数据负责人。</footer>
+<footer>本报表由 ecomflow-auto 自动生成；口径问题请联系数据负责人。</footer>
 </div></body></html>"""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(html, encoding="utf-8")

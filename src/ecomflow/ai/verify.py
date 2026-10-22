@@ -7,7 +7,7 @@
 
 用法：
     python main.py verify-ai
-    from ecom_ops.ai import verify_offline; df, ok = verify_offline()
+    from ecomflow.ai import verify_offline; df, ok = verify_offline()
 """
 
 from __future__ import annotations

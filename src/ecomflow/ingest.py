@@ -116,7 +116,7 @@ def _read_excel(path: Path, sheet: str | int | None) -> pd.DataFrame:
 
 def _http_get_json(url: str, timeout: int) -> dict[str, Any]:
     req = urllib.request.Request(url, headers={"Accept": "application/json",
-                                               "User-Agent": "ecom-ops-auto/1.0"})
+                                               "User-Agent": "ecomflow-auto/1.0"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310
         payload = resp.read().decode("utf-8")
     return json.loads(payload)

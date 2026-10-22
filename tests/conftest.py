@@ -12,8 +12,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from ecom_ops.clean import clean_all  # noqa: E402
-from ecom_ops.config import get_config  # noqa: E402
+from ecomflow.clean import clean_all  # noqa: E402
+from ecomflow.config import get_config  # noqa: E402
 
 
 @pytest.fixture(scope="session")

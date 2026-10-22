@@ -1,6 +1,8 @@
-# 电商运营数据自动化平台（ecom-ops-auto）
+# EcomFlow · 电商运营数据自动化平台
 
 一个面向电商运营团队的**数据自动化工作台**：把「平台导数据 → 清洗核对 → 出日报 → 异常提醒 → 内部工具查数」这条每天都要重复的链路，收敛成一条命令 / 一个页面。
+
+> 仓库：GitHub <https://github.com/Allegra11117/EcomFlow> ｜ Gitee <https://gitee.com/hh_50_0/auto>
 
 - 5 张平台业务表（订单、商品、库存、推广、活动）→ 约 4 万行真实感数据，内置 15 类常见脏数据
 - 1 条命令产出 **10 个 Sheet 的 Excel 日报** + 可进邮件的 HTML 摘要
@@ -97,7 +99,7 @@ HTML 摘要用于邮件正文，移动端可直接阅读（核心指标卡 + 平
 auto/
 ├── main.py                      # 统一入口（免安装）
 ├── config/config.yaml           # 数据源、阈值、通知渠道、AI 配置
-├── src/ecom_ops/
+├── src/ecomflow/
 │   ├── ingest.py                # 采集：CSV/Excel/HTTP，表头与编码适配
 │   ├── clean.py                 # 清洗：时间/状态/金额/主数据，全程留痕
 │   ├── validate.py              # 14 条校验规则 + 异常清单

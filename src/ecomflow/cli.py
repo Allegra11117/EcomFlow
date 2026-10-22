@@ -20,7 +20,7 @@ from .logging_setup import get_logger
 from .pipeline import run_pipeline
 from .validate import summarize, validate
 
-log = get_logger("ecom_ops.cli")
+log = get_logger("ecomflow.cli")
 
 
 def _print_frame(df: pd.DataFrame, max_rows: int = 20) -> None:
@@ -189,7 +189,7 @@ def cmd_schedule(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="ecom-ops", description="电商运营数据自动化平台：采集-清洗-校验-报表-提醒")
+        prog="ecomflow", description="电商运营数据自动化平台：采集-清洗-校验-报表-提醒")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_run = sub.add_parser("run", help="执行完整跑批（默认动作）")
