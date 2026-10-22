@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# 运行产物
+db/*.db
+db/*.db-wal
+db/*.db-shm
+logs/
+output/
+data/archive/
+
+# 本地密钥
+.env
+.streamlit/secrets.toml
+
+# 编辑器
+.idea/
+.vscode/
+.DS_Store
+.tmp_*

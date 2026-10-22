@@ -1,0 +1,160 @@
+# ============================================================
+# 电商运营数据自动化平台 - 主配置
+# 修改本文件即可调整数据源、阈值、通知渠道，无需改代码
+# ============================================================
+
+app:
+  name: 电商运营数据自动化平台
+  timezone: Asia/Shanghai
+  # 跑批默认统计窗口（天）
+  window_days: 120
+  # 库存/动销滚动观察窗口（天）
+  rolling_days: 30
+
+paths:
+  raw: data/raw
+  archive: data/archive
+  output: output
+  logs: logs
+  db: db/ecom.db
+
+# ------------------------------------------------------------
+# 1. 数据采集：每个来源一个适配器，支持 csv / excel / api
+#    rename 用于兼容平台导出的中文表头
+# ------------------------------------------------------------
+ingest:
+  api:
+    enabled: false
+    base_url: http://127.0.0.1:8801
+    timeout_seconds: 8
+    paths:
+      orders: /api/v1/orders
+      inventory: /api/v1/inventory
+  sources:
+    - name: products
+      type: csv
+      file: data/raw/products.csv
+      required_columns: [sku_id, sku_name, category, cost, list_price, launch_date]
+    - name: orders
+      type: csv
+      file: data/raw/orders.csv
+      required_columns: [order_id, order_time, platform, shop_id, sku_id, buyer_id,
+                         qty, unit_price, discount_amount, pay_amount, order_status, channel]
+    - name: inventory
+      type: csv
+      file: data/raw/inventory.csv
+      required_columns: [snapshot_date, sku_id, warehouse, on_hand, in_transit, safety_stock]
+    - name: traffic
+      type: csv
+      file: data/raw/traffic.csv
+      required_columns: [stat_date, platform, channel, impressions, clicks, spend,
+                         attr_orders, attr_gmv]
+    - name: campaigns
+      type: csv
+      file: data/raw/campaigns.csv
+      required_columns: [campaign_id, campaign_name, campaign_type, start_date, end_date,
+                         platform, sku_ids, budget]
+
+# ------------------------------------------------------------
+# 2. 清洗规则
+# ------------------------------------------------------------
+clean:
+  # 平台导出的状态文案统一为标准状态
+  status_map:
+    已支付: paid
+    支付成功: paid
+    待发货: paid
+    PAID: paid
+    Paid: paid
+    paid: paid
+    已退款: refunded
+    退款成功: refunded
+    REFUND: refunded
+    refunded: refunded
+    已取消: cancelled
+    交易关闭: cancelled
+    cancelled: cancelled
+    cancel: cancelled
+    未支付: pending
+    待付款: pending
+    pending: pending
+  # 平台别名统一
+  platform_map:
+    天猫: Tmall
+    淘宝: Taobao
+    京东: JD
+    拼多多: PDD
+    抖音: Douyin
+    抖音小店: Douyin
+    tmall: Tmall
+    taobao: Taobao
+    jd: JD
+    pdd: PDD
+    douyin: Douyin
+  # 成本缺失时的兜底毛利率（用于估值，会在清洗报告里标注）
+  fallback_cost_ratio: 0.35
+  # 商品主数据缺失时，是否保留订单（保留并打标，供异常中心跟进）
+  keep_orphan_orders: true
+
+# ------------------------------------------------------------
+# 3. 数据校验 / 异常提醒阈值
+# ------------------------------------------------------------
+validate:
+  thresholds:
+    gmv_wow_pct: 35          # 日 GMV 环比突增/突降
+    refund_rate_pct: 8       # 单日退款率
+    attribution_gmv_diff_pct: 20  # 流量归因 GMV 与订单 GMV 偏差
+    missing_field_pct: 5     # 字段缺失率
+    stale_days: 2            # 数据断档天数
+    min_margin_pct: 0        # 负毛利
+    campaign_roi_min: 1.5    # 活动 ROI 下限
+  # 每日跑批只对最近 N 天做趋势类校验，避免历史噪声重复告警
+  trend_check_days: 14
+
+inventory:
+  target_cover_days: 30      # 目标库存覆盖天数（补货建议）
+  slow_moving_days: 45       # 超过该天数无动销视为滞销
+  safety_factor: 1.2         # 安全库存缓冲系数
+  urgent_cover_days: 7       # 可售天数低于该值 = 紧急补货
+
+report:
+  currency: CNY
+  top_n: 20
+  keep_excel_days: 90
+
+# ------------------------------------------------------------
+# 4. 通知渠道（默认只写本地 + 控制台，Webhook/SMTP 需显式开启）
+# ------------------------------------------------------------
+notify:
+  console: true
+  file: true
+  only_levels: [high, medium]
+  webhook:
+    enabled: false
+    type: feishu          # feishu / dingtalk / wecom / generic
+    url: ""
+    timeout_seconds: 6
+  smtp:
+    enabled: false
+    host: smtp.example.com
+    port: 465
+    ssl: true
+    user: ""
+    password_env: SMTP_PASSWORD
+    to: []
+
+# ------------------------------------------------------------
+# 5. AI 辅助开发（无 Key 时自动降级为本地规则引擎，保证离线可跑）
+# ------------------------------------------------------------
+ai:
+  enabled: true
+  provider: auto           # auto / rule / llm
+  base_url: https://api.openai.com/v1
+  model: gpt-4o-mini
+  api_key_env: LLM_API_KEY
+  timeout_seconds: 25
+  max_rows: 200
+  allow_tables: [orders, products, inventory, traffic, campaigns, daily_kpi, dq_issues,
+                 daily_platform, inventory_alert, traffic_summary, campaign_effect, sku_rank]
+  # 交叉校验：AI 结果与本地基准实现的允许误差
+  verify_tolerance: 0.01
